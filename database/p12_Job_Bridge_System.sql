@@ -25,15 +25,15 @@ DROP TABLE IF EXISTS `application`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `application` (
-  `application_id` int NOT NULL,
+  `application_id` int NOT NULL AUTO_INCREMENT,
   `req_id` int DEFAULT NULL,
   `jobseeker_id` int DEFAULT NULL,
   `status` varchar(50) DEFAULT NULL,
   `current_stage` varchar(50) DEFAULT NULL,
   `applied_date` date DEFAULT NULL,
   `remarks` varchar(200) DEFAULT NULL,
-  `is_active` tinyint(1) DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
+  `is_active` tinyint(1) DEFAULT '1',
+  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`application_id`),
   KEY `fk_app_req` (`req_id`),
   KEY `fk_app_jobseeker` (`jobseeker_id`),
@@ -59,14 +59,14 @@ DROP TABLE IF EXISTS `company`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `company` (
-  `company_id` int NOT NULL,
+  `company_id` int NOT NULL AUTO_INCREMENT,
   `company_name` varchar(100) DEFAULT NULL,
   `company_email` varchar(100) DEFAULT NULL,
   `website` varchar(150) DEFAULT NULL,
   `location` varchar(100) DEFAULT NULL,
   `company_description` text,
   `user_id` int DEFAULT NULL,
-  `created_at` timestamp NULL DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`company_id`),
   KEY `fk_company_user` (`user_id`),
   CONSTRAINT `fk_company_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`)
@@ -79,7 +79,6 @@ CREATE TABLE `company` (
 
 LOCK TABLES `company` WRITE;
 /*!40000 ALTER TABLE `company` DISABLE KEYS */;
-INSERT INTO `company` VALUES (201,'ABC Technologies','contact@abctech.com','https://abctech.com','Pune','Software services company',102,'2026-01-22 09:54:51'),(202,'XYZ Solutions','hr@xyz.com','https://xyz.com','Mumbai','IT & consulting',102,'2026-01-22 09:54:51');
 /*!40000 ALTER TABLE `company` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -92,16 +91,16 @@ DROP TABLE IF EXISTS `education`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `education` (
   `edu_id` int NOT NULL AUTO_INCREMENT,
-  `jobSeeker_id` int DEFAULT NULL,
+  `jobseeker_id` int DEFAULT NULL,
   `qualification` varchar(30) DEFAULT NULL,
   `university` varchar(50) DEFAULT NULL,
   `college` varchar(40) DEFAULT NULL,
   `percentage_cgpa` decimal(4,2) DEFAULT NULL,
   `year_of_passing` int DEFAULT NULL,
-  `Education_Type` varchar(50) DEFAULT NULL,
+  `education_type` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`edu_id`),
-  KEY `fk_edu_jobseeker` (`jobSeeker_id`),
-  CONSTRAINT `fk_edu_jobseeker` FOREIGN KEY (`jobSeeker_id`) REFERENCES `jobseeker` (`jobseeker_id`)
+  KEY `fk_edu_jobseeker` (`jobseeker_id`),
+  CONSTRAINT `fk_edu_jobseeker` FOREIGN KEY (`jobseeker_id`) REFERENCES `jobseeker` (`jobseeker_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -122,7 +121,7 @@ DROP TABLE IF EXISTS `experience`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `experience` (
-  `experience_id` int NOT NULL,
+  `experience_id` int NOT NULL AUTO_INCREMENT,
   `jobseeker_id` int DEFAULT NULL,
   `company_name` varchar(150) DEFAULT NULL,
   `job_title` varchar(100) DEFAULT NULL,
@@ -157,7 +156,7 @@ DROP TABLE IF EXISTS `job_requirement`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `job_requirement` (
-  `req_id` int NOT NULL,
+  `req_id` int NOT NULL AUTO_INCREMENT,
   `company_id` int DEFAULT NULL,
   `domain_id` int DEFAULT NULL,
   `job_title` varchar(100) DEFAULT NULL,
@@ -171,7 +170,7 @@ CREATE TABLE `job_requirement` (
   `application_deadline` date DEFAULT NULL,
   `status` varchar(30) DEFAULT NULL,
   `posted_date` date DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `skill_id` int DEFAULT NULL,
   PRIMARY KEY (`req_id`),
   KEY `fk_req_company` (`company_id`),
@@ -198,22 +197,16 @@ DROP TABLE IF EXISTS `jobseeker`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `jobseeker` (
-  `jobseeker_id` int NOT NULL,
+  `jobseeker_id` int NOT NULL AUTO_INCREMENT,
   `user_id` int DEFAULT NULL,
   `resume_url` varchar(255) DEFAULT NULL,
-  `jobseeker_skill_id` int DEFAULT NULL,
   `current_location` varchar(100) DEFAULT NULL,
   `relocate` varchar(50) DEFAULT NULL,
   `date_of_birth` date DEFAULT NULL,
   `gender` varchar(10) DEFAULT NULL,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `edu_id` int DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`jobseeker_id`),
   KEY `fk_jobseeker_user` (`user_id`),
-  KEY `fk_jobseeker_edu` (`edu_id`),
-  KEY `fk_jobseeker_skillrow` (`jobseeker_skill_id`),
-  CONSTRAINT `fk_jobseeker_edu` FOREIGN KEY (`edu_id`) REFERENCES `education` (`edu_id`),
-  CONSTRAINT `fk_jobseeker_skillrow` FOREIGN KEY (`jobseeker_skill_id`) REFERENCES `jobseeker_skill` (`jobseeker_skill_id`),
   CONSTRAINT `fk_jobseeker_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -224,7 +217,6 @@ CREATE TABLE `jobseeker` (
 
 LOCK TABLES `jobseeker` WRITE;
 /*!40000 ALTER TABLE `jobseeker` DISABLE KEYS */;
-INSERT INTO `jobseeker` VALUES (301,103,'https://example.com/resume/vedant.pdf',NULL,'Pune','YES','2002-01-15','Male','2026-01-22 09:54:51',NULL);
 /*!40000 ALTER TABLE `jobseeker` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -236,7 +228,7 @@ DROP TABLE IF EXISTS `jobseeker_skill`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `jobseeker_skill` (
-  `jobseeker_skill_id` int NOT NULL,
+  `jobseeker_skill_id` int NOT NULL AUTO_INCREMENT,
   `jobseeker_id` int DEFAULT NULL,
   `skill_id` int DEFAULT NULL,
   PRIMARY KEY (`jobseeker_skill_id`),
@@ -264,10 +256,10 @@ DROP TABLE IF EXISTS `role`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `role` (
-  `role_id` int NOT NULL,
-  `role_name` varchar(50) DEFAULT NULL,
+  `role_id` int NOT NULL AUTO_INCREMENT,
+  `role_name` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`role_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -288,7 +280,7 @@ DROP TABLE IF EXISTS `shortlist`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `shortlist` (
-  `shortlist_id` int NOT NULL,
+  `shortlist_id` int NOT NULL AUTO_INCREMENT,
   `application_id` int DEFAULT NULL,
   `shortlisted` tinyint(1) DEFAULT NULL,
   `round_number` int DEFAULT NULL,
@@ -299,7 +291,7 @@ CREATE TABLE `shortlist` (
   `feedback` text,
   `final_decision` tinyint(1) DEFAULT NULL,
   `comments` varchar(200) DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`shortlist_id`),
   KEY `fk_shortlist_app` (`application_id`),
   CONSTRAINT `fk_shortlist_app` FOREIGN KEY (`application_id`) REFERENCES `application` (`application_id`)
@@ -323,7 +315,7 @@ DROP TABLE IF EXISTS `skill`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `skill` (
-  `skill_id` int NOT NULL,
+  `skill_id` int NOT NULL AUTO_INCREMENT,
   `skill_name` varchar(100) DEFAULT NULL,
   `skill_type` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`skill_id`)
@@ -347,22 +339,22 @@ DROP TABLE IF EXISTS `users`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `users` (
-  `user_id` int NOT NULL,
-  `email` varchar(100) DEFAULT NULL,
-  `username` varchar(50) DEFAULT NULL,
-  `password` varchar(100) DEFAULT NULL,
-  `full_name` varchar(100) DEFAULT NULL,
-  `phone` varchar(15) DEFAULT NULL,
+  `user_id` int NOT NULL AUTO_INCREMENT,
+  `email` varchar(255) DEFAULT NULL,
+  `username` varchar(255) DEFAULT NULL,
+  `password` varchar(255) DEFAULT NULL,
+  `full_name` varchar(255) DEFAULT NULL,
+  `phone` varchar(255) DEFAULT NULL,
   `profile_image` varchar(255) DEFAULT NULL,
   `role_id` int DEFAULT NULL,
-  `active` tinyint(1) DEFAULT NULL,
-  `created_at` timestamp NULL DEFAULT NULL,
+  `active` tinyint(1) DEFAULT '1',
+  `created_at` date DEFAULT NULL,
   PRIMARY KEY (`user_id`),
-  UNIQUE KEY `email` (`email`),
   UNIQUE KEY `username` (`username`),
+  UNIQUE KEY `email` (`email`),
   KEY `fk_users_role` (`role_id`),
   CONSTRAINT `fk_users_role` FOREIGN KEY (`role_id`) REFERENCES `role` (`role_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -371,7 +363,6 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (101,'admin@jobbridge.com','admin','admin@123','Admin User','9999999999',NULL,1,1,'2026-01-22 09:54:51'),(102,'hr@abc.com','abc_hr','hr@123','ABC HR','8888888888',NULL,2,1,'2026-01-22 09:54:51'),(103,'vedant@gmail.com','vedant','vedant@123','Vedant Nargide','7777777777',NULL,3,1,'2026-01-22 09:54:51');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -384,4 +375,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-01-22 16:01:57
+-- Dump completed on 2026-01-24  0:53:30
