@@ -1,0 +1,177 @@
+create database if not exists Job_Bridge;
+use Job_bridge;
+
+CREATE TABLE role (
+  role_id INT PRIMARY KEY,
+  role_name VARCHAR(50)
+);
+
+CREATE TABLE users (
+  user_id INT PRIMARY KEY,
+  email VARCHAR(100) UNIQUE,
+  username VARCHAR(50) UNIQUE,
+  password VARCHAR(100),
+  full_name VARCHAR(100),
+  phone VARCHAR(15),
+  profile_image VARCHAR(255),
+  role_id INT,
+  active BOOLEAN,
+  created_at TIMESTAMP,
+  CONSTRAINT fk_users_role FOREIGN KEY (role_id) REFERENCES role(role_id)
+);
+
+CREATE TABLE company (
+  company_id INT PRIMARY KEY,
+  company_name VARCHAR(100),
+  company_email VARCHAR(100),
+  website VARCHAR(150),
+  location VARCHAR(100),
+  company_description TEXT,
+  user_id INT,
+  created_at TIMESTAMP,
+  CONSTRAINT fk_company_user FOREIGN KEY (user_id) REFERENCES users(user_id)
+);
+
+CREATE TABLE skill (
+  skill_id INT PRIMARY KEY,
+  skill_name VARCHAR(100),
+  skill_type VARCHAR(50)
+);
+
+CREATE TABLE jobseeker (
+  jobseeker_id INT PRIMARY KEY,
+  user_id INT,
+  resume_url VARCHAR(255),
+  jobseeker_skill_id INT,
+  current_location VARCHAR(100),
+  relocate VARCHAR(50),
+  date_of_birth DATE,
+  gender VARCHAR(10),
+  created_at TIMESTAMP,
+  edu_id INT,
+  CONSTRAINT fk_jobseeker_user FOREIGN KEY (user_id) REFERENCES users(user_id)
+);
+
+CREATE TABLE Education (
+  edu_id INT AUTO_INCREMENT PRIMARY KEY,
+  jobSeeker_id INT,
+  qualification VARCHAR(30),
+  university VARCHAR(50),
+  college VARCHAR(40),
+  percentage_cgpa DECIMAL(4,2),
+  year_of_passing INT,
+  Education_Type VARCHAR(50),
+  CONSTRAINT fk_edu_jobseeker FOREIGN KEY (jobSeeker_id) REFERENCES jobseeker(jobseeker_id)
+);
+
+ALTER TABLE jobseeker
+  ADD CONSTRAINT fk_jobseeker_edu
+  FOREIGN KEY (edu_id) REFERENCES Education(edu_id);
+
+CREATE TABLE job_requirement (
+  req_id INT PRIMARY KEY,
+  company_id INT,
+  domain_id INT,
+  job_title VARCHAR(100),
+  job_description TEXT,
+  experience_required INT,
+  min_cgpa DECIMAL(3,2),
+  salary_package VARCHAR(50),
+  job_type VARCHAR(30),
+  location VARCHAR(100),
+  vacancy_count INT,
+  application_deadline DATE,
+  status VARCHAR(30),
+  posted_date DATE,
+  updated_at TIMESTAMP,
+  skill_id INT,
+  CONSTRAINT fk_req_company FOREIGN KEY (company_id) REFERENCES company(company_id),
+  CONSTRAINT fk_req_skill   FOREIGN KEY (skill_id)   REFERENCES skill(skill_id)
+);
+
+CREATE TABLE application (
+  application_id INT PRIMARY KEY,
+  req_id INT,
+  jobseeker_id INT,
+  status VARCHAR(50),
+  current_stage VARCHAR(50),
+  applied_date DATE,
+  remarks VARCHAR(200),
+  is_active BOOLEAN,
+  updated_at TIMESTAMP,
+  CONSTRAINT fk_app_req FOREIGN KEY (req_id) REFERENCES job_requirement(req_id),
+  CONSTRAINT fk_app_jobseeker FOREIGN KEY (jobseeker_id) REFERENCES jobseeker(jobseeker_id)
+);
+
+CREATE TABLE shortlist (
+  shortlist_id INT PRIMARY KEY,
+  application_id INT,
+  shortlisted BOOLEAN,
+  round_number INT,
+  interview_date DATE,
+  interview_mode VARCHAR(30),
+  interviewer_name VARCHAR(100),
+  selection_status VARCHAR(50),
+  feedback TEXT,
+  final_decision BOOLEAN,
+  comments VARCHAR(200),
+  updated_at TIMESTAMP,
+  CONSTRAINT fk_shortlist_app FOREIGN KEY (application_id) REFERENCES application(application_id)
+);
+
+CREATE TABLE Experience (
+  experience_id INT PRIMARY KEY,
+  jobseeker_id INT,
+  company_name VARCHAR(150),
+  job_title VARCHAR(100),
+  employment_type VARCHAR(50),
+  start_date DATE,
+  end_date DATE,
+  is_current BOOLEAN,
+  location VARCHAR(100),
+  skills_used VARCHAR(255),
+  description TEXT,
+  years_of_experience DECIMAL(5,2),
+  CONSTRAINT fk_exp_jobseeker FOREIGN KEY (jobseeker_id) REFERENCES jobseeker(jobseeker_id)
+);
+
+CREATE TABLE jobseeker_skill (
+  jobseeker_skill_id INT PRIMARY KEY,
+  jobseeker_id INT,
+  skill_id INT,
+  CONSTRAINT fk_js_skill_jobseeker FOREIGN KEY (jobseeker_id) REFERENCES jobseeker(jobseeker_id),
+  CONSTRAINT fk_js_skill_skill     FOREIGN KEY (skill_id)     REFERENCES skill(skill_id)
+);
+
+ALTER TABLE jobseeker
+  ADD CONSTRAINT fk_jobseeker_skillrow
+  FOREIGN KEY (jobseeker_skill_id) REFERENCES jobseeker_skill(jobseeker_skill_id);
+
+INSERT INTO role (role_id, role_name) VALUES
+(1, 'ADMIN'),
+(2, 'RECRUITER'),
+(3, 'JOBSEEKER');
+
+INSERT INTO users
+(user_id, email, username, password, full_name, phone, profile_image, role_id, active, created_at)
+VALUES
+(101, 'admin@jobbridge.com',     'admin',     'admin@123',     'Admin User',     '9999999999', NULL, 1, TRUE, NOW()),
+(102, 'hr@abc.com',             'abc_hr',     'hr@123',        'ABC HR',         '8888888888', NULL, 2, TRUE, NOW()),
+(103, 'vedant@gmail.com',       'vedant',     'vedant@123',    'Vedant Nargide',  '7777777777', NULL, 3, TRUE, NOW());
+
+INSERT INTO company
+(company_id, company_name, company_email, website, location, company_description, user_id, created_at)
+VALUES
+(201, 'ABC Technologies', 'contact@abctech.com', 'https://abctech.com', 'Pune',   'Software services company', 102, NOW()),
+(202, 'XYZ Solutions',    'hr@xyz.com',          'https://xyz.com',    'Mumbai', 'IT & consulting',           102, NOW());
+
+INSERT INTO jobseeker
+(jobseeker_id, user_id, resume_url, jobseeker_skill_id, current_location, relocate, date_of_birth, gender, created_at, edu_id)
+VALUES
+(301, 103, 'https://example.com/resume/vedant.pdf', NULL, 'Pune', 'YES', '2002-01-15', 'Male', NOW(), NULL);
+
+
+SELECT * FROM role;
+SELECT * FROM users;
+SELECT * FROM company;
+SELECT * FROM jobseeker;
