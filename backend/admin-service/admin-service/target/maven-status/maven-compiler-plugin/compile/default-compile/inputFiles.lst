@@ -1,0 +1,17 @@
+D:\antigravity\Job-Bridge System\admin-service\src\main\java\com\jobbridge\admin\entities\JobSeekerEntity.java
+D:\antigravity\Job-Bridge System\admin-service\src\main\java\com\jobbridge\admin\repositories\JobRequirementRepository.java
+D:\antigravity\Job-Bridge System\admin-service\src\main\java\com\jobbridge\admin\entities\RoleEntity.java
+D:\antigravity\Job-Bridge System\admin-service\src\main\java\com\jobbridge\admin\security\JwtUtil.java
+D:\antigravity\Job-Bridge System\admin-service\src\main\java\com\jobbridge\admin\security\JwtFilter.java
+D:\antigravity\Job-Bridge System\admin-service\src\main\java\com\jobbridge\admin\entities\JobRequirementEntity.java
+D:\antigravity\Job-Bridge System\admin-service\src\main\java\com\jobbridge\admin\repositories\JobSeekerRepository.java
+D:\antigravity\Job-Bridge System\admin-service\src\main\java\com\jobbridge\admin\controllers\AdminController.java
+D:\antigravity\Job-Bridge System\admin-service\src\main\java\com\jobbridge\admin\entities\CompanyEntity.java
+D:\antigravity\Job-Bridge System\admin-service\src\main\java\com\jobbridge\admin\AdminServiceApplication.java
+D:\antigravity\Job-Bridge System\admin-service\src\main\java\com\jobbridge\admin\services\AdminService.java
+D:\antigravity\Job-Bridge System\admin-service\src\main\java\com\jobbridge\admin\entities\UserEntity.java
+D:\antigravity\Job-Bridge System\admin-service\src\main\java\com\jobbridge\admin\repositories\ApplicationRepository.java
+D:\antigravity\Job-Bridge System\admin-service\src\main\java\com\jobbridge\admin\security\SecurityConfig.java
+D:\antigravity\Job-Bridge System\admin-service\src\main\java\com\jobbridge\admin\entities\ApplicationEntity.java
+D:\antigravity\Job-Bridge System\admin-service\src\main\java\com\jobbridge\admin\repositories\UserRepository.java
+D:\antigravity\Job-Bridge System\admin-service\src\main\java\com\jobbridge\admin\repositories\CompanyRepository.java

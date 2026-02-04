@@ -1,0 +1,17 @@
+com\jobbridge\admin\repositories\ApplicationRepository.class
+com\jobbridge\admin\entities\JobRequirementEntity.class
+com\jobbridge\admin\entities\RoleEntity.class
+com\jobbridge\admin\entities\CompanyEntity.class
+com\jobbridge\admin\repositories\JobSeekerRepository.class
+com\jobbridge\admin\security\SecurityConfig.class
+com\jobbridge\admin\entities\UserEntity.class
+com\jobbridge\admin\repositories\JobRequirementRepository.class
+com\jobbridge\admin\security\JwtFilter.class
+com\jobbridge\admin\repositories\CompanyRepository.class
+com\jobbridge\admin\services\AdminService.class
+com\jobbridge\admin\repositories\UserRepository.class
+com\jobbridge\admin\controllers\AdminController.class
+com\jobbridge\admin\AdminServiceApplication.class
+com\jobbridge\admin\entities\ApplicationEntity.class
+com\jobbridge\admin\security\JwtUtil.class
+com\jobbridge\admin\entities\JobSeekerEntity.class
